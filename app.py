@@ -59,12 +59,11 @@ test_nitrates = st.number_input("Nitrates (mg/L)", 0.0, 500.0, 20.0)
 test_chlorures = st.number_input("Chlorures (mg/L)", 0.0, 1000.0, 100.0)
 
 if st.button("Analyser"):
-
-nouvelle_eau = [[
-test_fer,
-test_nitrates,
-test_chlorures
-]]
+    nouvelle_eau = [[
+        test_fer,
+        test_nitrates,
+        test_chlorures
+    ]]
 
 prediction = modele.predict(nouvelle_eau)[0]
 

@@ -41,7 +41,7 @@ X_train, X_test, y_train, y_test = train_test_split(
     test_size=0.2,
     random_state=42
 )
-
+@st.cache_resource
 # Création du modèle IA
 model = MLPClassifier(
     hidden_layer_sizes=(16, 8),

@@ -11,55 +11,58 @@ st.write(
     "Cette IA prédit si une eau est potable ou non selon plusieurs paramètres chimiques."
 )
 
-# Génération des données
-np.random.seed(42)
-n_samples = 10000
-
-fer = np.random.uniform(0.0, 1.0, n_samples)
-nitrates = np.random.uniform(0.0, 100.0, n_samples)
-chlorures = np.random.uniform(0.0, 500.0, n_samples)
-
-potable = (
-    (fer < 0.3)
-    & (nitrates < 50)
-    & (chlorures < 250)
-).astype(int)
-
-df = pd.DataFrame({
-    "Fer_mgL": fer,
-    "Nitrates_mgL": nitrates,
-    "Chlorures_mgL": chlorures,
-    "Potable": potable
-})
-
-X = df[["Fer_mgL", "Nitrates_mgL", "Chlorures_mgL"]]
-y = df["Potable"]
-
-X_train, X_test, y_train, y_test = train_test_split(
-    X,
-    y,
-    test_size=0.2,
-    random_state=42
-)
+# Fonction mise en cache : elle évite de réentraîner le modèle à chaque clic
 @st.cache_resource
-# Création du modèle IA
-model = MLPClassifier(
-    hidden_layer_sizes=(16, 8),
-    max_iter=500,
-    random_state=42
-)
+def entrainer_modele():
+    np.random.seed(42)
+    n_samples = 10000
 
-# Entraînement
-model.fit(X_train, y_train)
+    fer = np.random.uniform(0.0, 1.0, n_samples)
+    nitrates = np.random.uniform(0.0, 100.0, n_samples)
+    chlorures = np.random.uniform(0.0, 500.0, n_samples)
 
-# Évaluation
-predictions = model.predict(X_test)
+    potable = (
+        (fer < 0.3)
+        & (nitrates < 50)
+        & (chlorures < 250)
+    ).astype(int)
 
-precision = accuracy_score(y_test, predictions)
+    df = pd.DataFrame({
+        "Fer_mgL": fer,
+        "Nitrates_mgL": nitrates,
+        "Chlorures_mgL": chlorures,
+        "Potable": potable
+    })
+
+    X = df[["Fer_mgL", "Nitrates_mgL", "Chlorures_mgL"]]
+    y = df["Potable"]
+
+    X_train, X_test, y_train, y_test = train_test_split(
+        X,
+        y,
+        test_size=0.2,
+        random_state=42
+    )
+
+    model = MLPClassifier(
+        hidden_layer_sizes=(16, 8),
+        max_iter=500,
+        random_state=42
+    )
+
+    model.fit(X_train, y_train)
+
+    predictions = model.predict(X_test)
+    precision = accuracy_score(y_test, predictions)
+
+    return model, precision
+
+
+with st.spinner("Chargement du modèle IA..."):
+    model, precision = entrainer_modele()
 
 st.success(f"Précision du modèle : {precision * 100:.2f}%")
 
-# Interface utilisateur
 st.header("Tester une nouvelle eau")
 
 test_fer = st.number_input(
@@ -92,7 +95,6 @@ if st.button("Analyser"):
     })
 
     prediction = model.predict(nouvelle_eau)[0]
-
     proba = model.predict_proba(nouvelle_eau)[0][1]
 
     st.write(f"Probabilité de potabilité : {proba * 100:.2f}%")

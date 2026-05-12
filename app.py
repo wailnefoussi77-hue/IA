@@ -72,17 +72,17 @@ proba = modele.predict_proba(nouvelle_eau)[0][1]
 st.write(f"Probabilité de potabilité : {proba*100:.2f}%")
 
 if prediction == 1:
-st.success("Eau POTABLE ✅")
+    st.success("Eau POTABLE ✅")
 else:
-st.error("Eau NON POTABLE ❌")
+    st.error("Eau NON POTABLE ❌")
 
 if test_fer >= 0.3:
-st.write("⚠️ Fer supérieur au seuil OMS")
+    st.write("⚠️ Fer supérieur au seuil OMS")
 
 if test_nitrates >= 50:
-st.write("⚠️ Nitrates supérieurs au seuil OMS")
+    st.write("⚠️ Nitrates supérieurs au seuil OMS")
 
 if test_chlorures >= 250:
-st.write("⚠️ Chlorures supérieurs au seuil OMS")
+    st.write("⚠️ Chlorures supérieurs au seuil OMS")
 if __name__ == "__main__":
     main()

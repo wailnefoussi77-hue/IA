@@ -51,11 +51,11 @@ test_nitrates = st.number_input("Nitrates (mg/L)", min_value=0.0, max_value=500.
 test_chlorures = st.number_input("Chlorures (mg/L)", min_value=0.0, max_value=1000.0, value=100.0)
 
 if st.button("Analyser"):
-nouvelle_eau = pd.DataFrame({
-"Fer_mgL": [test_fer],
-"Nitrates_mgL": [test_nitrates],
-"Chlorures_mgL": [test_chlorures]
-})
+  nouvelle_eau = pd.DataFrame({
+    "Fer_mgL": [test_fer],
+    "Nitrates_mgL": [test_nitrates],
+    "Chlorures_mgL": [test_chlorures]
+  })
 
 prediction = model.predict(nouvelle_eau)[0]
 proba = model.predict_proba(nouvelle_eau)[0][1]
@@ -63,13 +63,13 @@ proba = model.predict_proba(nouvelle_eau)[0][1]
 st.write(f"Probabilité de potabilité : {proba * 100:.2f}%")
 
 if prediction == 1:
-st.success("Eau POTABLE ✅")
+  st.success("Eau POTABLE ✅")
 else:
-st.error("Eau NON POTABLE ❌")
+  st.error("Eau NON POTABLE ❌")
 
 if test_fer >= 0.3:
-st.write("⚠️ Fer supérieur au seuil OMS")
+  st.write("⚠️ Fer supérieur au seuil OMS")
 if test_nitrates >= 50:
-st.write("⚠️ Nitrates supérieurs au seuil OMS")
+  st.write("⚠️ Nitrates supérieurs au seuil OMS")
 if test_chlorures >= 250:
-st.write("⚠️ Chlorures supérieurs au seuil OMS")
+  st.write("⚠️ Chlorures supérieurs au seuil OMS")

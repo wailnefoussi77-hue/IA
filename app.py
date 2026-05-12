@@ -38,15 +38,15 @@ X, y, test_size=0.2, random_state=42
 )
 
 # Réseau de neurones sklearn
-modele = MLPClassifier(
+model = MLPClassifier(
 hidden_layer_sizes=(16, 8),
 max_iter=500,
 random_state=42
 )
 
-modele.fit(X_train, y_train)
+model.fit(X_train, y_train)
 
-predictions = modele.predict(X_test)
+predictions = model.predict(X_test)
 
 precision = accuracy_score(y_test, predictions)
 
@@ -65,9 +65,9 @@ if st.button("Analyser"):
         test_chlorures
     ]]
 
-prediction = modele.predict(nouvelle_eau)[0]
+prediction = model.predict(nouvelle_eau)[0]
 
-proba = modele.predict_proba(nouvelle_eau)[0][1]
+proba = model.predict_proba(nouvelle_eau)[0][1]
 
 st.write(f"Probabilité de potabilité : {proba*100:.2f}%")
 
